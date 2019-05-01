@@ -13,10 +13,9 @@
 		E6012F5A22785855008E8276 /* CommentFromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6012F5922785855008E8276 /* CommentFromJSON.swift */; };
 		E6012F5C227858B9008E8276 /* UserFromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6012F5B227858B9008E8276 /* UserFromJSON.swift */; };
 		E6012F5E22785A34008E8276 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6012F5D22785A34008E8276 /* NetworkManager.swift */; };
-		E6012F6122788AA1008E8276 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6012F6022788AA1008E8276 /* Post.swift */; };
+		E6012F642279F330008E8276 /* Post.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E6012F622279F330008E8276 /* Post.xcdatamodeld */; };
 		E6020A042274F9E6006357F5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6020A032274F9E6006357F5 /* AppDelegate.swift */; };
 		E6020A092274F9E7006357F5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6020A072274F9E7006357F5 /* Main.storyboard */; };
-		E6020A0C2274F9E7006357F5 /* PostDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E6020A0A2274F9E7006357F5 /* PostDemo.xcdatamodeld */; };
 		E6020A0E2274F9E8006357F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6020A0D2274F9E8006357F5 /* Assets.xcassets */; };
 		E6020A112274F9E8006357F5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6020A0F2274F9E8006357F5 /* LaunchScreen.storyboard */; };
 		E6020A1B2274FDF6006357F5 /* PostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6020A1A2274FDF6006357F5 /* PostTableViewController.swift */; };
@@ -31,11 +30,10 @@
 		E6012F5922785855008E8276 /* CommentFromJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentFromJSON.swift; sourceTree = "<group>"; };
 		E6012F5B227858B9008E8276 /* UserFromJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFromJSON.swift; sourceTree = "<group>"; };
 		E6012F5D22785A34008E8276 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
-		E6012F6022788AA1008E8276 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		E6012F632279F330008E8276 /* Post.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Post.xcdatamodel; sourceTree = "<group>"; };
 		E6020A002274F9E6006357F5 /* PostDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PostDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6020A032274F9E6006357F5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E6020A082274F9E7006357F5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		E6020A0B2274F9E7006357F5 /* PostDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PostDemo.xcdatamodel; sourceTree = "<group>"; };
 		E6020A0D2274F9E8006357F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E6020A102274F9E8006357F5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E6020A122274F9E8006357F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -90,9 +88,7 @@
 				E6020A182274FD8B006357F5 /* Storyboard */,
 				E6020A032274F9E6006357F5 /* AppDelegate.swift */,
 				E6020A0D2274F9E8006357F5 /* Assets.xcassets */,
-				E6020A0F2274F9E8006357F5 /* LaunchScreen.storyboard */,
 				E6020A122274F9E8006357F5 /* Info.plist */,
-				E6020A0A2274F9E7006357F5 /* PostDemo.xcdatamodeld */,
 				E6012F5D22785A34008E8276 /* NetworkManager.swift */,
 			);
 			path = PostDemo;
@@ -102,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				E6020A072274F9E7006357F5 /* Main.storyboard */,
+				E6020A0F2274F9E8006357F5 /* LaunchScreen.storyboard */,
 			);
 			name = Storyboard;
 			sourceTree = "<group>";
@@ -128,8 +125,8 @@
 		E625443E22772042004BCB4E /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E6012F622279F330008E8276 /* Post.xcdatamodeld */,
 				E6012F5F22788A8A008E8276 /* JSON */,
-				E6012F6022788AA1008E8276 /* Post.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -205,12 +202,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6020A0C2274F9E7006357F5 /* PostDemo.xcdatamodeld in Sources */,
 				E6012F54227796C1008E8276 /* PostDetailViewController.swift in Sources */,
 				E6012F56227855E1008E8276 /* UserCell.swift in Sources */,
-				E6012F6122788AA1008E8276 /* Post.swift in Sources */,
 				E6020A1B2274FDF6006357F5 /* PostTableViewController.swift in Sources */,
 				E6012F5E22785A34008E8276 /* NetworkManager.swift in Sources */,
+				E6012F642279F330008E8276 /* Post.xcdatamodeld in Sources */,
 				E6020A042274F9E6006357F5 /* AppDelegate.swift in Sources */,
 				E625443D22770CDF004BCB4E /* PostCell.swift in Sources */,
 				E6254440227723AA004BCB4E /* PostFromJSON.swift in Sources */,
@@ -418,13 +414,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		E6020A0A2274F9E7006357F5 /* PostDemo.xcdatamodeld */ = {
+		E6012F622279F330008E8276 /* Post.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				E6020A0B2274F9E7006357F5 /* PostDemo.xcdatamodel */,
+				E6012F632279F330008E8276 /* Post.xcdatamodel */,
 			);
-			currentVersion = E6020A0B2274F9E7006357F5 /* PostDemo.xcdatamodel */;
-			path = PostDemo.xcdatamodeld;
+			currentVersion = E6012F632279F330008E8276 /* Post.xcdatamodel */;
+			path = Post.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

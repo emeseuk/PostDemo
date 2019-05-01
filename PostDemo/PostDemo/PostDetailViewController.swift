@@ -10,8 +10,8 @@ import UIKit
 
 class PostDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var posts = [Post]()
-    
+    var post : PostMO!
+
     @IBOutlet var tableView : UITableView!
     
     override func viewDidLoad() {
@@ -36,14 +36,14 @@ class PostDetailViewController: UIViewController, UITableViewDelegate, UITableVi
         case 0:
             let cellIdentifier = "userCell"
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! UserCell
-            cell.name.text = posts[indexPath.row].authorName
-            cell.userName.text = posts[indexPath.row].authorUsername
+            cell.name.text = post.authorName
+            cell.userName.text = post.authorUsername
             return cell
         case 1:
             let cellIdentifier = "commentCell"
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! CommentCell
-            cell.postDescription.text = posts[indexPath.row].body
-            cell.commentNumber.text = posts[indexPath.row].numberOfComments.description
+            cell.postDescription.text = post.body
+            cell.commentNumber.text = post.numberOfComments.description
             return cell
         default:
             fatalError("Failed to instantiate the table view cell for detail view controller")

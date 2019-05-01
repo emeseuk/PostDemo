@@ -6,19 +6,23 @@
 //  Copyright © 2019 Emese Toth. All rights reserved.
 //
 
+import UIKit
 import Foundation
+import CoreData
 
 class NetworkManager {
     
     var posts = [PostFromJSON]()
     var users = [UserFromJSON]()
     var comments = [CommentFromJSON]()
+    
+    var post : PostMO!
 
     let jsonAddresses =  ["http://jsonplaceholder.typicode.com/users",
                           "http://jsonplaceholder.typicode.com/comments",
                           "http://jsonplaceholder.typicode.com/posts"]
     
-    func download(withCompletion completion: @escaping ([Post]) -> ()) {
+    func download(withCompletion completion: @escaping () -> ()) {
         
         let downloadGroup = DispatchGroup()
         
@@ -51,10 +55,11 @@ class NetworkManager {
                 }.resume()
         }
         
-        downloadGroup.wait()
+        downloadGroup.wait(timeout: DispatchTime.now() + 5)
         
         DispatchQueue.main.async {
-            completion(self.createPost(self.posts, self.comments, self.users))
+            self.createPost(self.posts, self.comments, self.users)
+            completion()
         }
     }
     
@@ -66,20 +71,30 @@ class NetworkManager {
         return counts
     }
     
-    func createPost(_ posts: [PostFromJSON],_ comments: [CommentFromJSON], _ users: [UserFromJSON]) -> [Post]{
-        var objs = [Post]()
+    func createPost(_ posts: [PostFromJSON],_ comments: [CommentFromJSON], _ users: [UserFromJSON]){
+        
+        if UserDefaults.standard.bool(forKey: "hasDownloadedPosts") {
+            return
+        }
+        
         var commentCountArray = getNumberOfComments(comments)
         
         for p in posts {
-            let obj = Post()
-            obj.title = p.title
-            obj.id = p.id
-            obj.body = p.body
-            obj.numberOfComments = commentCountArray[p.id] ?? 0
-            obj.authorName = users[p.userId - 1].name
-            obj.authorUsername = users[p.userId - 1].username
-            objs.append(obj)
+            if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+                post = PostMO(context: appDelegate.persistentContainer.viewContext)
+                post.title = p.title
+                post.id = Int32(p.id)
+                post.body = p.body
+                let comment = commentCountArray[p.id] ?? 0
+                post.numberOfComments = Int32(comment)
+                post.authorName = users[p.userId - 1].name
+                post.authorUsername = users[p.userId - 1].username
+                appDelegate.saveContext()
+            }
+            UserDefaults.standard.set(true, forKey: "hasDownloadedPosts")
         }
-        return objs
+        print("Saving data to context ...")
     }
+    
+
 }

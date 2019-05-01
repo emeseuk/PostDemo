@@ -7,22 +7,22 @@
 //
 
 import UIKit
+import CoreData
 
-class PostTableViewController: UITableViewController {
+class PostTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
     
-    var posts = [Post]()
+    var posts : [PostMO] = []
+    var fetchResultController: NSFetchedResultsController<PostMO>!
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
-        downloadImageAssets()
+        downloadDataFromJson()
+        self.fetchPosts()
     }
 
-    // MARK: - Table view data source
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 10
-    }
-
+   // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return posts.count
     }
@@ -38,14 +38,38 @@ class PostTableViewController: UITableViewController {
         if segue.identifier == "showPostDetail" {
             if let indexPath = tableView.indexPathForSelectedRow {
                 let destinationController = segue.destination as! PostDetailViewController
-                destinationController.posts = self.posts
+                destinationController.post = self.posts[indexPath.row]
             }
         }
     }
     
-    func downloadImageAssets() {
-        NetworkManager().download() { postArray in
-            self.posts = postArray
+    func fetchPosts(){
+        // Fetch data from data store
+        let fetchRequest: NSFetchRequest<PostMO> = PostMO.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "id", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+            let context = appDelegate.persistentContainer.viewContext
+            fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                               managedObjectContext: context,
+                                                               sectionNameKeyPath: nil,
+                                                               cacheName: nil)
+            fetchResultController.delegate = self
+            do {
+                try fetchResultController.performFetch()
+                if let fetchedObjects = fetchResultController.fetchedObjects {
+                    posts = fetchedObjects
+                }
+            } catch {
+                print(error)
+            }
+        }
+
+    }
+    
+    func downloadDataFromJson() {
+        NetworkManager().download() {
+            self.fetchPosts()
             self.tableView.reloadData()
         }
     }
