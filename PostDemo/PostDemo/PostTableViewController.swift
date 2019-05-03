@@ -12,14 +12,21 @@ import CoreData
 class PostTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
     
     var posts : [PostMO] = []
+    var post : PostMO!
     var fetchResultController: NSFetchedResultsController<PostMO>!
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
+        self.fetchPostsFromCoreData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if UserDefaults.standard.bool(forKey: "hasDownloadedPosts") {
+            return
+        }
         downloadDataFromJson()
-        self.fetchPosts()
     }
 
    // MARK: - Table view data source
@@ -43,7 +50,7 @@ class PostTableViewController: UITableViewController, NSFetchedResultsController
         }
     }
     
-    func fetchPosts(){
+    func fetchPostsFromCoreData(){
         // Fetch data from data store
         let fetchRequest: NSFetchRequest<PostMO> = PostMO.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "id", ascending: true)
@@ -64,12 +71,39 @@ class PostTableViewController: UITableViewController, NSFetchedResultsController
                 print(error)
             }
         }
-
+    }
+    
+    func savePostsToCoreData(_ result: Result) {
+        var commentCountArray = getNumberOfComments(result)
+        
+        for p in result.posts {
+            if let appDelegate = (UIApplication.shared.delegate as? AppDelegate) { //db class
+                post = PostMO(context: appDelegate.persistentContainer.viewContext)
+                post.title = p.title
+                post.id = Int32(p.id)
+                post.body = p.body
+                let comment = commentCountArray[p.id] ?? 0
+                post.numberOfComments = Int32(comment)
+                post.authorName = result.users[p.userId - 1].name
+                post.authorUsername = result.users[p.userId - 1].username
+                appDelegate.saveContext()
+            }
+            UserDefaults.standard.set(true, forKey: "hasDownloadedPosts")
+        }
+    }
+    
+    func getNumberOfComments(_ posts: Result) ->  [Int: Int] {
+        var counts: [Int: Int] = [:]
+        for comment in posts.comments {
+            counts[comment.postId, default: 0] += 1
+        }
+        return counts
     }
     
     func downloadDataFromJson() {
-        NetworkManager().download() {
-            self.fetchPosts()
+        NetworkManager().download() { result in
+            self.savePostsToCoreData(result)
+            self.fetchPostsFromCoreData()
             self.tableView.reloadData()
         }
     }
